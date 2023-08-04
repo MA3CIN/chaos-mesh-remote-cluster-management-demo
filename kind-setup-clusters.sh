@@ -21,3 +21,14 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --version 2.6.1
 #Verify installation
 kubectl get po -n chaos-mesh
 echo "Chaos mesh installation completed"
+
+#Add cluster to chaos mesh
+kubectl apply -f K8s-yaml-files/remote-cluster.yaml
+kubectl apply -f K8s-yaml-files/secret-kubeconfig.yaml
+
+#Run chaos experiment
+kubectl apply -f K8s-yaml-files/remote-chaos-experiment.yaml
+
+#See results in external cluster (ammount of restarts should change)
+kubectl config use kind-external
+kubectl get po -o wide
