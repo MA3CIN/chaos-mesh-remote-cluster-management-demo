@@ -1,0 +1,12 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: RemoteCluster
+metadata:
+  name: external-cluster
+spec:
+  namespace: 'chaos-mesh'
+  version: '2.6.1'
+  kubeConfig:
+    secretRef:
+      name: chaos-mesh-02.kubeconfig
+      namespace: default
+      key: kubeconfig

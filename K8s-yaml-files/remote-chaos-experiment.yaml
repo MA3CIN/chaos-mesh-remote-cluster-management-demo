@@ -1,0 +1,14 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-kill
+spec:
+  remoteCluster: external-cluster
+  action: pod-kill
+  mode: one
+  duration: 120s
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: nginx
