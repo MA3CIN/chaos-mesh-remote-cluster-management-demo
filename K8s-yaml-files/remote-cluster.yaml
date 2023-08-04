@@ -7,6 +7,6 @@ spec:
   version: '2.6.1'
   kubeConfig:
     secretRef:
-      name: chaos-mesh-02.kubeconfig
+      name: chaos-mesh.kubeconfig
       namespace: default
       key: kubeconfig
