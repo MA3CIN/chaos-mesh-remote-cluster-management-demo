@@ -7,4 +7,4 @@ kubectl config get-contexts
 
 #retrieve kubeconfig from external cluster
 kubectl config use-context kind-external
-kubectl config view --raw --minify > kubeconfig.txt
+kubectl config view --raw --minify | base64 >> K8s-yaml-files/secret-kubeconfig.yaml
