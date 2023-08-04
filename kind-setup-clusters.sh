@@ -5,6 +5,19 @@ kind create cluster --config kind-external-cluster-config.yaml
 #Verfiy access to both clusters
 kubectl config get-contexts
 
-#retrieve kubeconfig from external cluster
-kubectl config use-context kind-external
+#Retrieve kubeconfig from external cluster, store it in a secret for Chaos mesh
+kubectl config use kind-external
 kubectl config view --raw --minify | base64 >> K8s-yaml-files/secret-kubeconfig.yaml
+
+#Create deploy for external cluster
+kubectl apply -f K8s-yaml-files/nginx-deployment.yaml
+
+#Go to base cluster, install chaos mesh
+kubectl config use kind-base
+helm repo add chaos-mesh https://charts.chaos-mesh.org
+helm search repo chaos-mesh
+kubectl create ns chaos-mesh
+helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --version 2.6.1
+#Verify installation
+kubectl get po -n chaos-mesh
+echo "Chaos mesh installation completed"
