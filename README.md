@@ -37,6 +37,13 @@ sudo sysctl fs.inotify.max_user_instances=512
 ```
 Alternatively, if you want these changes to be permanent, add these lines to /etc/sysctl.conf
 
+# Troubleshooting
+If the experiments is created without issues but the pods in external clusters are not affected, make sure that the secret contains the correct KubeConfig file. To get the data from the secret and decode it, run this command:
+```
+kubectl get secret chaos-mesh.kubeconfig -o json | jq -r '.data.kubeconfig' | base64 -d
+```
+If the file contains the correct KubeConfig, proceed with the usual troubleshooting steps - describe the experiment, see if the labels match, etc. 
+
 # Expected outcome
 After applying the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should be able to describe the newly created RemoteCluster object, and the outcome should look similiar to this:
 
