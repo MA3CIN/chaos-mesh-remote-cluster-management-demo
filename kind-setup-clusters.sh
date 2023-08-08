@@ -7,7 +7,7 @@ kubectl config get-contexts
 
 #Retrieve kubeconfig from external cluster, store it in a secret for Chaos mesh
 kubectl config use kind-external
-kubectl config view --raw --minify | base64 >> K8s-yaml-files/secret-kubeconfig.yaml
+kubectl config view --raw --minify | base64 -w 0 >> K8s-yaml-files/secret-kubeconfig.yaml
 
 #Create deploy for external cluster
 kubectl apply -f K8s-yaml-files/nginx-deployment.yaml
@@ -23,8 +23,8 @@ kubectl get po -n chaos-mesh
 echo "Chaos mesh installation completed"
 
 #Add cluster to chaos mesh
-kubectl apply -f K8s-yaml-files/remote-cluster.yaml
 kubectl apply -f K8s-yaml-files/secret-kubeconfig.yaml
+kubectl apply -f K8s-yaml-files/remote-cluster.yaml
 
 #Run chaos experiment
 kubectl apply -f K8s-yaml-files/remote-chaos-experiment.yaml
