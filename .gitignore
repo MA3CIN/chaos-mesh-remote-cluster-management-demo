@@ -1,0 +1,2 @@
+#Keep the secret clean on git to ensure the script runs without issues on the first try
+K8s-yaml-files/secret-kubeconfig.yaml
