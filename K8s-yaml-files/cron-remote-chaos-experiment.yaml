@@ -1,0 +1,19 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  name: schedule-pod-kill-remote
+spec:
+  schedule: '@every 60s'
+  historyLimit: 3
+  concurrencyPolicy: 'Allow'
+  type: 'PodChaos'
+  podChaos:
+    action: pod-kill
+    mode: one
+    remoteCluster: external-cluster
+    selector:
+      namespaces:
+        - default
+      labelSelectors:
+        app: nginx
+    duration: '30s'

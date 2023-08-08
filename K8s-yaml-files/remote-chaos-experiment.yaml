@@ -6,7 +6,7 @@ spec:
   remoteCluster: external-cluster
   action: pod-kill
   mode: one
-  duration: 120s
+  duration: 30s
   selector:
     namespaces:
       - default
