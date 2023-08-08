@@ -9,8 +9,9 @@ kubectl config get-contexts
 kubectl config use kind-external
 kubectl config view --raw --minify | base64 -w 0 >> K8s-yaml-files/secret-kubeconfig.yaml
 
-#Create deploy for external cluster
+#Create deploy for external cluster, create namespace for chaos-mesh
 kubectl apply -f K8s-yaml-files/nginx-deployment.yaml
+kubectl create namespace chaos-mesh
 
 #Go to base cluster, install chaos mesh
 kubectl config use kind-base
