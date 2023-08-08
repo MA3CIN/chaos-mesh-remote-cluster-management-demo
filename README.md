@@ -5,11 +5,21 @@ The demo features scripts creating two multi node clusters using [kind](https://
 ![Architecture diagram](images/chaos-mesh-multi-cluster.png)
 
 # Quick start
-Start by running the __kind-setup-clusters.sh__ script. Next, change context between the clusters (base and external) using this command:
+Start by running the __kind-setup-clusters.sh__ script. 
+```
+./kind-setup-clusters.sh
+```
+Next, change context between the clusters (base and external) using this command:
 ```
 kubectl config use kind-external
 ```
 And observe the outcomes of the Chaos Experiment in the remote cluster. More Chaos Experiments will be added in the __K8s-yaml-files__ folder as support for remote experiments increases.
+
+# Cleanup
+After you're done with the experiments, remove the kind clusters (purging ALL kind clusters) using this script:
+```
+./teardown-kind.sh
+```
 
 # Requirements
 To ensure the stability of the demo environment, make sure that you have these tools installed:
