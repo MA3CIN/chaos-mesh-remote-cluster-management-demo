@@ -29,6 +29,6 @@ kubectl apply -f K8s-yaml-files/secret-kubeconfig.yaml
 #Run chaos experiment
 kubectl apply -f K8s-yaml-files/remote-chaos-experiment.yaml
 
-#See results in external cluster (ammount of restarts should change)
+#See results in external cluster (ammount of restarts for pods should change)
 kubectl config use kind-external
 kubectl get po -o wide
