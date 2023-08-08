@@ -36,3 +36,52 @@ sudo sysctl fs.inotify.max_user_watches=524288
 sudo sysctl fs.inotify.max_user_instances=512
 ```
 Alternatively, if you want these changes to be permanent, add these lines to /etc/sysctl.conf
+
+# Expected outcome
+After applying the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should be able to describe the newly created RemoteCluster object, and the outcome should look similiar to this:
+
+```
+$ kubectl describe RemoteCluster external-cluster
+Name:         external-cluster
+Namespace:    
+Labels:       <none>
+Annotations:  <none>
+API Version:  chaos-mesh.org/v1alpha1
+Kind:         RemoteCluster
+Metadata:
+  Creation Timestamp:  2023-08-08T10:00:29Z
+  Generation:          1
+  Managed Fields:
+    API Version:  chaos-mesh.org/v1alpha1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .:
+          f:kubectl.kubernetes.io/last-applied-configuration:
+      f:spec:
+        .:
+        f:kubeConfig:
+          .:
+          f:secretRef:
+            .:
+            f:key:
+            f:name:
+            f:namespace:
+        f:namespace:
+        f:version:
+    Manager:         kubectl-client-side-apply
+    Operation:       Update
+    Time:            2023-08-08T10:00:29Z
+  Resource Version:  4069
+  UID:               5fcb080c-f7b7-441c-9ada-0536117d1f90
+Spec:
+  Kube Config:
+    Secret Ref:
+      Key:        kubeconfig
+      Name:       chaos-mesh.kubeconfig
+      Namespace:  default
+  Namespace:      chaos-mesh
+  Version:        2.6.1
+Events:           <none>
+```
