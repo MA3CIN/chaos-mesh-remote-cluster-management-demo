@@ -14,9 +14,9 @@ And observe the outcomes of the Chaos Experiment in the remote cluster. More Cha
 # Requirements
 To ensure the stability of the demo environment, make sure that you have these tools installed:
 ```
-Docker
-Kind
-Helm
+Docker >= 23.0.6
+Kind >= v0.20.0
+Helm >= 3.11.2
 ```
 
 # Known issues
