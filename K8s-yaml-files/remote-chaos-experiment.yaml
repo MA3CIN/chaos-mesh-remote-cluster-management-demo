@@ -3,7 +3,7 @@ kind: PodChaos
 metadata:
   name: pod-kill
 spec:
-  remoteCluster: external-cluster
+  remoteCluster: cluster-external
   action: pod-kill
   mode: one
   duration: 30s
