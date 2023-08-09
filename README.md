@@ -38,7 +38,7 @@ sudo sysctl fs.inotify.max_user_instances=512
 Alternatively, if you want these changes to be permanent, add these lines to /etc/sysctl.conf
 
 # Troubleshooting
-If the experiments is created without issues but the pods in external clusters are not affected, make sure that the secret contains the correct KubeConfig file. To get the data from the secret and decode it, run this command:
+If the experiment is created without issues but the pods in external clusters are not affected, make sure that the secret contains the correct KubeConfig file. To get the data from the secret and decode it, run this command:
 ```
 kubectl get secret chaos-mesh.kubeconfig -o json | jq -r '.data.kubeconfig' | base64 -d
 ```
