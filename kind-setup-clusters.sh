@@ -32,7 +32,7 @@ kubectl config use kind-base
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 helm search repo chaos-mesh
 kubectl create ns chaos-mesh
-helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --version 2.6.1
+helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh --version 2.6.1 --set dashboard.securityMode=false
 
 #Verify installation
 kubectl wait pods -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh --for condition=Ready --timeout=600s 
