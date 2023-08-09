@@ -44,6 +44,14 @@ kubectl get secret chaos-mesh.kubeconfig -o json | jq -r '.data.kubeconfig' | ba
 ```
 If the file contains the correct KubeConfig, proceed with the usual troubleshooting steps - describe the experiment, see if the labels match, etc. 
 
+If your kind clusters time out while waiting for pods to be ready, check your internet download speed - base images for kind nodes take up to 900MB, and chaos mesh images can range from 45 to 450Mi. You can inspect image size using this command:
+
+```
+docker manifest inspect -v ghcr.io/chaos-mesh/chaos-daemon:v2.6.1 | grep size | awk -F ':' '{sum+=$NF} END {print sum}' | numfmt --to=iec-i
+449Mi
+
+```
+
 # Expected outcome
 After applying the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should be able to describe the newly created RemoteCluster object, and the outcome should look similiar to this:
 
