@@ -19,7 +19,15 @@ kubectl config get-contexts
 
 #Retrieve kubeconfig from external cluster, store it in a secret for Chaos mesh
 kubectl config use kind-external
-kubectl config view --raw --minify | base64 -w 0 >> K8s-yaml-files/secret-kubeconfig.yaml
+
+external_control_plane_address=$(docker inspect \
+  -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' external-control-plane)
+
+kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" >> kubeconfig_output.txt
+
+
+kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" | base64 -w 0 >> K8s-yaml-files/secret-kubeconfig.yaml
+
 
 #Create deploy for external cluster, create namespace for chaos-mesh
 kubectl apply -f K8s-yaml-files/nginx-deployment.yaml
