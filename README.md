@@ -51,6 +51,12 @@ docker manifest inspect -v ghcr.io/chaos-mesh/chaos-daemon:v2.6.1 | grep size | 
 449Mi
 
 ```
+To verify if the advertised control plane address matches the docker container address, use this command to quickly learn all container addresses on your computer:
+```
+docker inspect $(docker ps -q ) \
+--format='{{ printf "%-50s" .Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}'
+```
+
 
 # Expected outcome
 After applying the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should be able to describe the newly created RemoteCluster object, and the outcome should look similiar to this:
