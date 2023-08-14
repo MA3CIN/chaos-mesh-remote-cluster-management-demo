@@ -59,50 +59,36 @@ docker inspect $(docker ps -q ) \
 
 
 # Expected outcome
-After applying the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should be able to describe the newly created RemoteCluster object, and the outcome should look similiar to this:
+After creating the Kubernetes secret with your auto generated kubeconfig for the external cluster, you should see a remoteCluster object in the base cluster, as well as a podChaos object.
+```
+$ kubectl get remoteclusters
+NAME               AGE
+cluster-external   95s
+$ kubectl get podchaos
+NAME       AGE
+pod-kill   56s
 
 ```
-$ kubectl describe RemoteCluster external-cluster
-Name:         external-cluster
-Namespace:    
-Labels:       <none>
-Annotations:  <none>
-API Version:  chaos-mesh.org/v1alpha1
-Kind:         RemoteCluster
-Metadata:
-  Creation Timestamp:  2023-08-08T10:00:29Z
-  Generation:          1
-  Managed Fields:
-    API Version:  chaos-mesh.org/v1alpha1
-    Fields Type:  FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:annotations:
-          .:
-          f:kubectl.kubernetes.io/last-applied-configuration:
-      f:spec:
-        .:
-        f:kubeConfig:
-          .:
-          f:secretRef:
-            .:
-            f:key:
-            f:name:
-            f:namespace:
-        f:namespace:
-        f:version:
-    Manager:         kubectl-client-side-apply
-    Operation:       Update
-    Time:            2023-08-08T10:00:29Z
-  Resource Version:  4069
-  UID:               5fcb080c-f7b7-441c-9ada-0536117d1f90
-Spec:
-  Kube Config:
-    Secret Ref:
-      Key:        kubeconfig
-      Name:       chaos-mesh.kubeconfig
-      Namespace:  default
-  Namespace:      chaos-mesh
-  Version:        2.6.1
-Events:           <none>
+On the external cluster, you should be able to see the newly installed Chaos Mesh components in the chaos-mesh namespace
+
 ```
+$ kubectl get po -n chaos-mesh
+NAME                                        READY   STATUS    RESTARTS   AGE
+chaos-controller-manager-8676548b77-m8xr4   1/1     Running   0          2m14s
+chaos-controller-manager-8676548b77-n8v5w   1/1     Running   0          2m14s
+chaos-controller-manager-8676548b77-t5w6f   1/1     Running   0          2m14s
+chaos-daemon-5wx5p                          1/1     Running   0          2m14s
+chaos-dashboard-64765f4dd6-qdl9l            1/1     Running   0          2m14s
+chaos-dns-server-6fbbd87547-v4v97           1/1     Running   0          2m14s
+
+```
+As a result of the experiment, one of the pods will be recreated (indicated by the AGE column)
+```
+NAME                                 READY   STATUS              RESTARTS   AGE    IP           NODE              NOMINATED NODE   READINESS GATES
+sample-deployment-57d84f57dc-dqm8z   0/1     ContainerCreating   0          0s     <none>       external-worker   <none>           <none>
+sample-deployment-57d84f57dc-xltmt   1/1     Running             0          118s   10.244.1.4   external-worker   <none>           <none>
+sample-deployment-57d84f57dc-zmmjx   1/1     Running             0          118s   10.244.1.3   external-worker   <none>           <none>
+
+```
+
+More experiments are described in [this](https://github.com/MA3CIN/chaos-mesh-remote-cluster-management-demo/tree/main/K8s-yaml-files/chaos-experiments-remote) folder.
