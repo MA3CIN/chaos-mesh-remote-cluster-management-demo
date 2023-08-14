@@ -23,6 +23,8 @@ kubectl config use kind-external
 external_control_plane_address=$(docker inspect \
   -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' external-control-plane)
 
+output_information "External kube api address is $external_control_plane_address"
+
 kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" > debug/kubeconfig_output.txt
 
 
