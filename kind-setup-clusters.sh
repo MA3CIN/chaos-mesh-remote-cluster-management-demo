@@ -23,7 +23,7 @@ kubectl config use kind-external
 external_control_plane_address=$(docker inspect \
   -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' external-control-plane)
 
-kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" >> kubeconfig_output.txt
+kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" > debug/kubeconfig_output.txt
 
 
 kubectl config view --raw --minify | sed "s/127.0.0.1/$external_control_plane_address/g" | base64 -w 0 >> K8s-yaml-files/secret-kubeconfig.yaml
