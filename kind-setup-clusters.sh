@@ -53,8 +53,17 @@ output_information "Chaos mesh installation on base cluster completed"
 kubectl apply -f K8s-yaml-files/secret-kubeconfig.yaml
 kubectl apply -f K8s-yaml-files/remote-cluster.yaml
 
+#Wait for Chaos Mesh installation on remote cluster
+kubectl config use kind-external
+output_information "Waiting for Helm to install chaos mesh on External cluster"
+sleep 10
+
+kubectl wait pods -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh --for condition=Ready --timeout=600s
+output_information "Chaos mesh installation on External cluster completed"
+
 #Run chaos experiment
-kubectl apply -f K8s-yaml-files/remote-chaos-experiment.yaml
+kubectl config use kind-base
+kubectl apply -f K8s-yaml-files/chaos-experiments-remote/pod-kill-experiment.yaml
 
 #See results in external cluster (ammount of restarts for pods should change)
 kubectl config use kind-external

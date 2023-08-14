@@ -1,0 +1,18 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: network-partition
+spec:
+  remoteCluster: cluster-external
+  action: partition
+  mode: all
+  selector:
+    labelSelectors:
+      app: nginx
+  direction: to
+  target:
+    selector:
+      labelSelectors:
+        app: nginx
+    mode: all
+  duration: "80s"
